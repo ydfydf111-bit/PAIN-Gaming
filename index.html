@@ -2,147 +2,55 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>PAIN GAMING - Endless Runner</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>PAIN GAMING</title>
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
-  touch-action:none;
-}
-
-html,body{
-  width:100%;
-  height:100%;
-  overflow:hidden;
-  background:#05030b;
-  font-family:Arial,sans-serif;
-}
-
-#game{
-  position:fixed;
-  inset:0;
-  width:100%;
-  height:100%;
-  display:block;
-}
+*{margin:0;padding:0;box-sizing:border-box;touch-action:none}
+html,body{width:100%;height:100%;overflow:hidden;background:#05030b;font-family:Arial}
+canvas{position:fixed;inset:0;width:100%;height:100%}
 
 #hud{
-  position:fixed;
-  top:14px;
-  left:15px;
-  right:15px;
-  z-index:10;
-  display:flex;
-  justify-content:space-between;
-  color:white;
-  font-weight:bold;
-  font-size:20px;
-  text-shadow:0 2px 5px #000;
+ position:fixed;top:14px;left:15px;right:15px;
+ display:flex;justify-content:space-between;
+ color:white;font-size:19px;font-weight:bold;
+ z-index:10;text-shadow:0 2px 5px #000
 }
-
-#title{
-  color:#ff2938;
-}
+#title{color:#ff2638}
 
 .panel{
-  position:fixed;
-  inset:0;
-  z-index:20;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  color:white;
-  text-align:center;
-  background:rgba(3,2,10,.70);
+ position:fixed;inset:0;z-index:20;
+ display:flex;flex-direction:column;
+ justify-content:center;align-items:center;
+ color:white;text-align:center;
+ background:rgba(3,2,10,.72)
+}
+.panel h1{font-size:45px;color:#ff2638;text-shadow:0 0 25px red}
+.panel h2{font-size:40px;color:#ff2638}
+.panel p{margin:8px;font-size:18px}
+
+button{
+ margin-top:22px;padding:14px 55px;
+ border:2px solid #ff3545;border-radius:12px;
+ background:#d7192a;color:white;
+ font-size:23px;font-weight:bold
 }
 
-.panel h1{
-  color:#ff2637;
-  font-size:48px;
-  margin-bottom:5px;
-  text-shadow:0 0 25px #ff1525;
-}
-
-.panel h2{
-  color:#ff2637;
-  font-size:42px;
-  margin-bottom:15px;
-}
-
-.panel p{
-  font-size:18px;
-  margin:7px 0;
-}
-
-#play,
-#again{
-  margin-top:25px;
-  border:2px solid #ff3947;
-  border-radius:12px;
-  background:#d7192a;
-  color:white;
-  font-size:24px;
-  font-weight:bold;
-  padding:14px 55px;
-  box-shadow:0 0 25px rgba(255,30,50,.6);
-}
-
-#gameover{
-  display:none;
-}
+#gameover{display:none}
 
 #controls{
-  position:fixed;
-  left:0;
-  right:0;
-  bottom:25px;
-  z-index:15;
-  display:flex;
-  justify-content:space-between;
-  padding:0 25px;
-  pointer-events:none;
+ position:fixed;bottom:25px;left:0;right:0;
+ display:flex;justify-content:space-between;
+ padding:0 25px;z-index:15;pointer-events:none
 }
 
 .control{
-  width:68px;
-  height:68px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:31px;
-  color:white;
-  background:rgba(30,30,40,.75);
-  border:2px solid rgba(255,255,255,.35);
-  box-shadow:0 0 15px rgba(255,255,255,.12);
-  pointer-events:auto;
-  user-select:none;
-}
-
-.control:active{
-  transform:scale(.9);
-  background:rgba(220,20,40,.8);
-}
-
-@media(max-width:600px){
-  #hud{
-    font-size:17px;
-  }
-
-  .panel h1{
-    font-size:38px;
-  }
-
-  .control{
-    width:62px;
-    height:62px;
-    font-size:27px;
-  }
+ width:65px;height:65px;border-radius:50%;
+ display:flex;align-items:center;justify-content:center;
+ background:rgba(30,30,40,.75);
+ border:2px solid rgba(255,255,255,.35);
+ color:white;font-size:29px;
+ pointer-events:auto
 }
 </style>
 </head>
@@ -152,1258 +60,641 @@ html,body{
 <canvas id="game"></canvas>
 
 <div id="hud">
-  <div id="title">⚡ PAIN GAMING</div>
-  <div>🏆 <span id="score">0</span></div>
-  <div>💎 <span id="coins">0</span></div>
+ <div id="title">⚡ PAIN GAMING</div>
+ <div>🏆 <span id="score">0</span></div>
+ <div>💎 <span id="coins">0</span></div>
 </div>
 
 <div id="start" class="panel">
-  <h1>PAIN GAMING</h1>
-  <p>ENDLESS RUNNER</p>
-  <p>⬅️ ➡️ تغيير المسار</p>
-  <p>⬆️ قفز &nbsp;&nbsp; ⬇️ انحناء</p>
-  <button id="play">PLAY</button>
+ <h1>PAIN GAMING</h1>
+ <p>ENDLESS RUNNER</p>
+ <p>⬅️ ➡️ تغيير المسار</p>
+ <p>⬆️ قفز &nbsp; ⬇️ انحناء</p>
+ <button id="play">PLAY</button>
 </div>
 
 <div id="gameover" class="panel">
-  <h2>GAME OVER</h2>
-  <p>Score: <span id="finalScore">0</span></p>
-  <p>💎 Coins: <span id="finalCoins">0</span></p>
-  <button id="again">PLAY AGAIN</button>
+ <h2>GAME OVER</h2>
+ <p>Score: <span id="finalScore">0</span></p>
+ <p>💎 Coins: <span id="finalCoins">0</span></p>
+ <button id="again">PLAY AGAIN</button>
 </div>
 
 <div id="controls">
-  <div class="control" id="left">⬅️</div>
-  <div class="control" id="jump">⬆️</div>
-  <div class="control" id="slide">⬇️</div>
-  <div class="control" id="right">➡️</div>
+ <div class="control" id="left">⬅️</div>
+ <div class="control" id="jump">⬆️</div>
+ <div class="control" id="slide">⬇️</div>
+ <div class="control" id="right">➡️</div>
 </div>
 
 <script>
+const canvas=document.getElementById("game");
+const ctx=canvas.getContext("2d");
 
-const canvas = document.getElementById("game");
-const ctx = canvas.getContext("2d");
+let W=innerWidth,H=innerHeight,DPR=1;
 
-let W = 0;
-let H = 0;
-let DPR = 1;
-
-function resize(){
-
-  DPR = Math.min(window.devicePixelRatio || 1,2);
-
-  W = window.innerWidth;
-  H = window.innerHeight;
-
-  canvas.width = W * DPR;
-  canvas.height = H * DPR;
-
-  canvas.style.width = W + "px";
-  canvas.style.height = H + "px";
-
-  ctx.setTransform(DPR,0,0,DPR,0,0);
-
-  player.x = laneX(player.lane);
-}
-
-window.addEventListener("resize",resize);
-
-let running = false;
-
-let score = 0;
-let coins = 0;
-let speed = 7;
-let distance = 0;
-
-let obstacleTimer = 80;
-let gemTimer = 40;
-
-const player = {
-
-  lane:1,
-
-  x:0,
-
-  jump:0,
-
-  vy:0,
-
-  sliding:false
-
+const player={
+ lane:1,
+ x:0,
+ jump:0,
+ vy:0,
+ sliding:false
 };
 
-let obstacles = [];
-let gems = [];
+let running=false;
+let score=0;
+let coins=0;
+let speed=7;
+let distance=0;
+let obstacles=[];
+let gems=[];
+let obstacleTimer=70;
+let gemTimer=35;
 
-/* =========================
-   ROAD
-========================= */
-
-function laneX(lane){
-
-  const roadLeft = W * .12;
-  const roadWidth = W * .76;
-
-  return roadLeft + roadWidth * ((lane + .5) / 3);
-
+function resize(){
+ DPR=Math.min(devicePixelRatio||1,2);
+ W=innerWidth;
+ H=innerHeight;
+ canvas.width=W*DPR;
+ canvas.height=H*DPR;
+ canvas.style.width=W+"px";
+ canvas.style.height=H+"px";
+ ctx.setTransform(DPR,0,0,DPR,0,0);
+ player.x=getLaneX(player.lane,H*.82);
 }
 
-/* =========================
-   RESET
-========================= */
+addEventListener("resize",resize);
 
-function resetGame(){
+/* الطريق في الخلف والقدام */
+function roadAt(y){
+ const horizon=H*.31;
+ let t=(y-horizon)/(H-horizon);
+ t=Math.max(0,Math.min(1,t));
 
-  score = 0;
-  coins = 0;
-  speed = 7;
-  distance = 0;
+ const left=W*(.43-.39*t);
+ const right=W*(.57+.39*t);
 
-  obstacleTimer = 80;
-  gemTimer = 40;
-
-  player.lane = 1;
-  player.x = laneX(1);
-  player.jump = 0;
-  player.vy = 0;
-  player.sliding = false;
-
-  obstacles = [];
-  gems = [];
-
-  document.getElementById("score").textContent = "0";
-  document.getElementById("coins").textContent = "0";
-
+ return {
+   left:left,
+   right:right,
+   width:right-left
+ };
 }
 
-/* =========================
-   START
-========================= */
+/* وسط كل مسار حسب مكانه في الطريق */
+function getLaneX(lane,y){
+ const r=roadAt(y);
+ return r.left+r.width*((lane+.5)/3);
+}
+
+function reset(){
+ score=0;
+ coins=0;
+ speed=7;
+ distance=0;
+ obstacles=[];
+ gems=[];
+ obstacleTimer=70;
+ gemTimer=35;
+
+ player.lane=1;
+ player.jump=0;
+ player.vy=0;
+ player.sliding=false;
+ player.x=getLaneX(1,H*.82);
+
+ document.getElementById("score").textContent=0;
+ document.getElementById("coins").textContent=0;
+}
 
 function startGame(){
-
-  resetGame();
-
-  running = true;
-
-  document.getElementById("start").style.display = "none";
-  document.getElementById("gameover").style.display = "none";
-
+ reset();
+ running=true;
+ document.getElementById("start").style.display="none";
+ document.getElementById("gameover").style.display="none";
 }
-
-document.getElementById("play").addEventListener("click",startGame);
-document.getElementById("again").addEventListener("click",startGame);
-
-/* =========================
-   GAME OVER
-========================= */
 
 function gameOver(){
-
-  if(!running)return;
-
-  running = false;
-
-  document.getElementById("finalScore").textContent =
-    Math.floor(score);
-
-  document.getElementById("finalCoins").textContent =
-    coins;
-
-  document.getElementById("gameover").style.display = "flex";
-
+ running=false;
+ document.getElementById("finalScore").textContent=Math.floor(score);
+ document.getElementById("finalCoins").textContent=coins;
+ document.getElementById("gameover").style.display="flex";
 }
 
-/* =========================
-   MOVEMENT
-========================= */
+document.getElementById("play").onclick=startGame;
+document.getElementById("again").onclick=startGame;
 
 function moveLeft(){
-
-  if(!running)return;
-
-  player.lane--;
-
-  if(player.lane < 0){
-    player.lane = 0;
-  }
-
+ if(!running)return;
+ player.lane=Math.max(0,player.lane-1);
 }
 
 function moveRight(){
-
-  if(!running)return;
-
-  player.lane++;
-
-  if(player.lane > 2){
-    player.lane = 2;
-  }
-
+ if(!running)return;
+ player.lane=Math.min(2,player.lane+1);
 }
 
 function jump(){
-
-  if(!running)return;
-
-  if(player.jump === 0){
-
-    player.vy = 16;
-
-  }
-
+ if(!running)return;
+ if(player.jump===0)player.vy=16;
 }
 
 function slide(){
+ if(!running)return;
+ if(player.sliding)return;
 
-  if(!running)return;
+ player.sliding=true;
 
-  if(player.sliding)return;
-
-  player.sliding = true;
-
-  setTimeout(function(){
-
-    player.sliding = false;
-
-  },600);
-
+ setTimeout(()=>{
+   player.sliding=false;
+ },600);
 }
 
-/* =========================
-   BUTTONS
-========================= */
+function bind(id,fn){
+ const el=document.getElementById(id);
 
-function touchButton(id,fn){
+ el.addEventListener("touchstart",e=>{
+   e.preventDefault();
+   fn();
+ },{passive:false});
 
-  const el = document.getElementById(id);
-
-  el.addEventListener("touchstart",function(e){
-
-    e.preventDefault();
-    fn();
-
-  },{passive:false});
-
-  el.addEventListener("mousedown",function(e){
-
-    e.preventDefault();
-    fn();
-
-  });
-
+ el.addEventListener("mousedown",e=>{
+   e.preventDefault();
+   fn();
+ });
 }
 
-touchButton("left",moveLeft);
-touchButton("right",moveRight);
-touchButton("jump",jump);
-touchButton("slide",slide);
+bind("left",moveLeft);
+bind("right",moveRight);
+bind("jump",jump);
+bind("slide",slide);
 
-/* =========================
-   KEYBOARD
-========================= */
-
-window.addEventListener("keydown",function(e){
-
-  if(e.key === "ArrowLeft"){
-    moveLeft();
-  }
-
-  if(e.key === "ArrowRight"){
-    moveRight();
-  }
-
-  if(e.key === "ArrowUp" || e.key === " "){
-    jump();
-  }
-
-  if(e.key === "ArrowDown"){
-    slide();
-  }
-
+addEventListener("keydown",e=>{
+ if(e.key==="ArrowLeft")moveLeft();
+ if(e.key==="ArrowRight")moveRight();
+ if(e.key==="ArrowUp"||e.key===" ")jump();
+ if(e.key==="ArrowDown")slide();
 });
 
-/* =========================
-   SWIPE
-========================= */
+/* السحب باللمس */
+let sx=0,sy=0;
 
-let touchStartX = 0;
-let touchStartY = 0;
-
-canvas.addEventListener("touchstart",function(e){
-
-  const t = e.touches[0];
-
-  touchStartX = t.clientX;
-  touchStartY = t.clientY;
-
+canvas.addEventListener("touchstart",e=>{
+ sx=e.touches[0].clientX;
+ sy=e.touches[0].clientY;
 },{passive:true});
 
-canvas.addEventListener("touchend",function(e){
+canvas.addEventListener("touchend",e=>{
+ const dx=e.changedTouches[0].clientX-sx;
+ const dy=e.changedTouches[0].clientY-sy;
 
-  const t = e.changedTouches[0];
-
-  const dx = t.clientX - touchStartX;
-  const dy = t.clientY - touchStartY;
-
-  if(Math.abs(dx) > Math.abs(dy)){
-
-    if(dx > 45){
-      moveRight();
-    }
-
-    if(dx < -45){
-      moveLeft();
-    }
-
-  }else{
-
-    if(dy < -45){
-      jump();
-    }
-
-    if(dy > 45){
-      slide();
-    }
-
-  }
-
+ if(Math.abs(dx)>Math.abs(dy)){
+   if(dx>40)moveRight();
+   if(dx<-40)moveLeft();
+ }else{
+   if(dy<-40)jump();
+   if(dy>40)slide();
+ }
 },{passive:true});
-
-/* =========================
-   SPAWN OBSTACLE
-========================= */
 
 function spawnObstacle(){
-
-  const lane = Math.floor(Math.random()*3);
-
-  const type =
-    Math.random() < .25
-    ? "high"
-    : "block";
-
-  obstacles.push({
-
-    lane:lane,
-
-    z:1,
-
-    type:type
-
-  });
-
+ obstacles.push({
+   lane:Math.floor(Math.random()*3),
+   z:1,
+   type:Math.random()<.25?"high":"block"
+ });
 }
-
-/* =========================
-   SPAWN GEM
-========================= */
 
 function spawnGem(){
-
-  const lane = Math.floor(Math.random()*3);
-
-  gems.push({
-
-    lane:lane,
-
-    z:1,
-
-    collected:false
-
-  });
-
+ gems.push({
+   lane:Math.floor(Math.random()*3),
+   z:1,
+   collected:false
+ });
 }
-
-/* =========================
-   UPDATE
-========================= */
 
 function update(){
+ if(!running)return;
 
-  if(!running)return;
+ distance+=speed;
+ score+=speed*.04;
+ speed+=.0015;
 
-  distance += speed;
+ obstacleTimer-=speed;
+ gemTimer-=speed;
 
-  score += speed * .04;
+ if(obstacleTimer<=0){
+   spawnObstacle();
+   obstacleTimer=180+Math.random()*150;
+ }
 
-  speed += .0015;
+ if(gemTimer<=0){
+   spawnGem();
+   gemTimer=80+Math.random()*100;
+ }
 
-  obstacleTimer -= speed;
-  gemTimer -= speed;
+ if(player.jump>0||player.vy!==0){
+   player.jump+=player.vy;
+   player.vy-=.75;
 
-  if(obstacleTimer <= 0){
+   if(player.jump<=0){
+     player.jump=0;
+     player.vy=0;
+   }
+ }
 
-    spawnObstacle();
+ /* الشخصية تتحرك داخل المسار الصحيح */
+ const target=getLaneX(player.lane,H*.82);
+ player.x+=(target-player.x)*.18;
 
-    obstacleTimer =
-      180 + Math.random()*170;
+ for(const o of obstacles){
+   o.z-=speed*.0028;
+ }
 
-  }
+ for(const g of gems){
+   g.z-=speed*.0028;
+ }
 
-  if(gemTimer <= 0){
+ collisions();
 
-    spawnGem();
+ obstacles=obstacles.filter(o=>o.z>-.15);
+ gems=gems.filter(g=>g.z>-.15&&!g.collected);
 
-    gemTimer =
-      90 + Math.random()*100;
-
-  }
-
-  /* jump */
-
-  if(player.jump > 0 || player.vy !== 0){
-
-    player.jump += player.vy;
-
-    player.vy -= .75;
-
-    if(player.jump <= 0){
-
-      player.jump = 0;
-      player.vy = 0;
-
-    }
-
-  }
-
-  /* smooth lane movement */
-
-  const targetX = laneX(player.lane);
-
-  player.x +=
-    (targetX-player.x)*.18;
-
-  /* move objects */
-
-  for(let o of obstacles){
-
-    o.z -= speed*.0028;
-
-  }
-
-  for(let g of gems){
-
-    g.z -= speed*.0028;
-
-  }
-
-  checkCollisions();
-
-  obstacles =
-    obstacles.filter(o=>o.z > -.15);
-
-  gems =
-    gems.filter(g=>g.z > -.15 && !g.collected);
-
-  document.getElementById("score").textContent =
-    Math.floor(score);
-
-  document.getElementById("coins").textContent =
-    coins;
-
+ document.getElementById("score").textContent=Math.floor(score);
+ document.getElementById("coins").textContent=coins;
 }
 
-/* =========================
-   COLLISIONS
-========================= */
+function collisions(){
 
-function checkCollisions(){
+ for(const o of obstacles){
 
-  for(let o of obstacles){
+   if(o.z<.17&&o.z>.015&&o.lane===player.lane){
 
-    if(
-      o.z < .17 &&
-      o.z > .015 &&
-      o.lane === player.lane
-    ){
+     if(o.type==="block"){
 
-      if(o.type === "block"){
+       if(player.jump<55){
+         gameOver();
+         return;
+       }
 
-        if(player.jump < 55){
+     }else{
 
-          gameOver();
-          return;
+       if(!player.sliding){
+         gameOver();
+         return;
+       }
 
-        }
+     }
+   }
+ }
 
-      }else{
+ for(const g of gems){
 
-        if(!player.sliding){
-
-          gameOver();
-          return;
-
-        }
-
-      }
-
-    }
-
-  }
-
-  for(let g of gems){
-
-    if(
-      g.z < .18 &&
-      g.z > .01 &&
-      g.lane === player.lane &&
-      !g.collected
-    ){
-
-      coins++;
-
-      score += 25;
-
-      g.collected = true;
-
-    }
-
-  }
-
+   if(
+     g.z<.18&&
+     g.z>.01&&
+     g.lane===player.lane&&
+     !g.collected
+   ){
+     coins++;
+     score+=25;
+     g.collected=true;
+   }
+ }
 }
-
-/* =========================
-   BACKGROUND
-========================= */
 
 function drawBackground(){
 
-  const horizon = H*.31;
+ const horizon=H*.31;
 
-  const gradient =
-    ctx.createLinearGradient(0,0,0,H);
+ const grad=ctx.createLinearGradient(0,0,0,H);
+ grad.addColorStop(0,"#05030d");
+ grad.addColorStop(.5,"#17102b");
+ grad.addColorStop(1,"#05040a");
 
-  gradient.addColorStop(0,"#05030d");
-  gradient.addColorStop(.5,"#16102a");
-  gradient.addColorStop(1,"#05040a");
+ ctx.fillStyle=grad;
+ ctx.fillRect(0,0,W,H);
 
-  ctx.fillStyle = gradient;
+ /* النجوم */
+ for(let i=0;i<50;i++){
+   const x=(i*97)%W;
+   const y=(i*47)%(horizon-15);
 
-  ctx.fillRect(0,0,W,H);
+   ctx.fillStyle="rgba(255,255,255,.5)";
+   ctx.fillRect(x,y,2,2);
+ }
 
-  /* stars */
+ /* القمر */
+ ctx.beginPath();
+ ctx.arc(W*.82,H*.13,35,0,Math.PI*2);
+ ctx.fillStyle="rgba(220,220,240,.28)";
+ ctx.fill();
 
-  for(let i=0;i<55;i++){
+ /* المدينة */
+ for(let i=0;i<20;i++){
 
-    const x =
-      (i*97)%W;
+   const bw=25+(i*17)%45;
+   const bh=50+(i*31)%120;
+   const x=i*(W/20);
 
-    const y =
-      (i*53)%(horizon-20);
+   ctx.fillStyle="#0d0c18";
+   ctx.fillRect(x,horizon-bh,bw,bh);
 
-    ctx.fillStyle =
-      "rgba(255,255,255,.55)";
-
-    ctx.fillRect(x,y,2,2);
-
-  }
-
-  /* moon */
-
-  ctx.beginPath();
-
-  ctx.arc(
-    W*.82,
-    H*.13,
-    Math.min(W,H)*.045,
-    0,
-    Math.PI*2
-  );
-
-  ctx.fillStyle =
-    "rgba(210,210,235,.3)";
-
-  ctx.fill();
-
-  /* city */
-
-  const count = 20;
-
-  for(let i=0;i<count;i++){
-
-    const bw =
-      25 + (i*17)%45;
-
-    const bh =
-      50 + (i*31)%130;
-
-    const x =
-      i*(W/count);
-
-    ctx.fillStyle = "#0d0c18";
-
-    ctx.fillRect(
-      x,
-      horizon-bh,
-      bw,
-      bh
-    );
-
-    for(
-      let y=horizon-bh+15;
-      y<horizon-8;
-      y+=22
-    ){
-
-      ctx.fillStyle="#c51f2f";
-
-      ctx.fillRect(
-        x+7,
-        y,
-        5,
-        7
-      );
-
-    }
-
-  }
-
+   for(let y=horizon-bh+15;y<horizon-8;y+=22){
+     ctx.fillStyle="#c92131";
+     ctx.fillRect(x+7,y,5,7);
+   }
+ }
 }
-
-/* =========================
-   ROAD
-========================= */
 
 function drawRoad(){
 
-  const horizon = H*.31;
+ const horizon=H*.31;
 
-  /* road */
+ ctx.beginPath();
+ ctx.moveTo(W*.43,horizon);
+ ctx.lineTo(W*.57,horizon);
+ ctx.lineTo(W*.96,H);
+ ctx.lineTo(W*.04,H);
+ ctx.closePath();
 
-  ctx.beginPath();
+ const grad=ctx.createLinearGradient(0,horizon,0,H);
+ grad.addColorStop(0,"#292431");
+ grad.addColorStop(1,"#07070b");
 
-  ctx.moveTo(
-    W*.43,
-    horizon
-  );
+ ctx.fillStyle=grad;
+ ctx.fill();
 
-  ctx.lineTo(
-    W*.57,
-    horizon
-  );
+ /* جوانب الطريق */
+ ctx.strokeStyle="#ff2538";
+ ctx.lineWidth=5;
 
-  ctx.lineTo(
-    W*.96,
-    H
-  );
+ ctx.beginPath();
+ ctx.moveTo(W*.43,horizon);
+ ctx.lineTo(W*.04,H);
+ ctx.stroke();
 
-  ctx.lineTo(
-    W*.04,
-    H
-  );
+ ctx.beginPath();
+ ctx.moveTo(W*.57,horizon);
+ ctx.lineTo(W*.96,H);
+ ctx.stroke();
 
-  ctx.closePath();
+ /* 3 مسارات */
+ for(let lane=1;lane<3;lane++){
 
-  const roadGradient =
-    ctx.createLinearGradient(
-      0,
-      horizon,
-      0,
-      H
-    );
+   const topX=getLaneX(lane-0.5,horizon);
+   const bottomX=getLaneX(lane-0.5,H);
 
-  roadGradient.addColorStop(
-    0,
-    "#24202f"
-  );
+   ctx.strokeStyle="rgba(255,255,255,.28)";
+   ctx.lineWidth=3;
 
-  roadGradient.addColorStop(
-    1,
-    "#07070b"
-  );
-
-  ctx.fillStyle = roadGradient;
-
-  ctx.fill();
-
-  /* red edges */
-
-  ctx.strokeStyle="#ff2538";
-  ctx.lineWidth=5;
-
-  ctx.beginPath();
-
-  ctx.moveTo(
-    W*.43,
-    horizon
-  );
-
-  ctx.lineTo(
-    W*.04,
-    H
-  );
-
-  ctx.stroke();
-
-  ctx.beginPath();
-
-  ctx.moveTo(
-    W*.57,
-    horizon
-  );
-
-  ctx.lineTo(
-    W*.96,
-    H
-  );
-
-  ctx.stroke();
-
-  /* lanes */
-
-  for(let lane=1;lane<3;lane++){
-
-    const topX =
-      W*.43 +
-      W*.14*(lane/3);
-
-    const bottomX =
-      W*.04 +
-      W*.92*(lane/3);
-
-    ctx.strokeStyle =
-      "rgba(255,255,255,.28)";
-
-    ctx.lineWidth=3;
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-      topX,
-      horizon
-    );
-
-    ctx.lineTo(
-      bottomX,
-      H
-    );
-
-    ctx.stroke();
-
-  }
-
-  /* road lights */
-
-  for(let i=0;i<10;i++){
-
-    const p =
-      ((distance*.004+i/10)%1);
-
-    const y =
-      horizon +
-      p*p*(H-horizon);
-
-    const leftX =
-      W*.43 -
-      p*(W*.39);
-
-    const rightX =
-      W*.57 +
-      p*(W*.39);
-
-    ctx.fillStyle="#ff2435";
-
-    ctx.fillRect(
-      leftX,
-      y,
-      5+p*6,
-      5+p*6
-    );
-
-    ctx.fillRect(
-      rightX,
-      y,
-      5+p*6,
-      5+p*6
-    );
-
-  }
-
+   ctx.beginPath();
+   ctx.moveTo(topX,horizon);
+   ctx.lineTo(bottomX,H);
+   ctx.stroke();
+ }
 }
-
-/* =========================
-   OBSTACLE
-========================= */
 
 function drawObstacle(o){
 
-  if(o.z>1)return;
+ const p=1-o.z;
 
-  const p = 1-o.z;
+ const y=H*.31+p*p*(H*.60);
 
-  const x = laneX(o.lane);
+ /* هنا النقطة المهمة:
+    X ديال الحاجز تابع لنفس perspective ديال الطريق */
+ const x=getLaneX(o.lane,y);
 
-  const horizon = H*.31;
+ const size=30+p*85;
 
-  const y =
-    horizon +
-    p*p*(H*.60);
+ if(o.type==="block"){
 
-  const size =
-    35+p*80;
+   ctx.save();
 
-  if(o.type === "block"){
+   ctx.shadowColor="#ff2035";
+   ctx.shadowBlur=20;
 
-    ctx.save();
+   ctx.fillStyle="#df1d30";
 
-    ctx.shadowColor="#ff1d32";
-    ctx.shadowBlur=20;
+   ctx.fillRect(
+     x-size/2,
+     y-size,
+     size,
+     size
+   );
 
-    ctx.fillStyle="#d51c2e";
+   ctx.shadowBlur=0;
 
-    ctx.fillRect(
-      x-size/2,
-      y-size,
-      size,
-      size
-    );
+   ctx.fillStyle="#26050a";
 
-    ctx.shadowBlur=0;
+   ctx.fillRect(
+     x-size*.3,
+     y-size*.72,
+     size*.6,
+     size*.13
+   );
 
-    ctx.fillStyle="#25050a";
+   ctx.restore();
 
-    ctx.fillRect(
-      x-size*.30,
-      y-size*.72,
-      size*.60,
-      size*.13
-    );
+ }else{
 
-    ctx.restore();
+   ctx.save();
 
-  }else{
+   ctx.strokeStyle="#ff2639";
+   ctx.lineWidth=9;
 
-    /* high barrier */
+   ctx.shadowColor="#ff2035";
+   ctx.shadowBlur=15;
 
-    ctx.save();
+   ctx.beginPath();
+   ctx.moveTo(x-size,y-size*.8);
+   ctx.lineTo(x+size,y-size*.8);
+   ctx.stroke();
 
-    ctx.strokeStyle="#ff2639";
-    ctx.lineWidth=
-      8+p*8;
+   ctx.shadowBlur=0;
 
-    ctx.shadowColor="#ff2035";
-    ctx.shadowBlur=15;
+   ctx.strokeStyle="#781521";
+   ctx.lineWidth=5;
 
-    ctx.beginPath();
+   ctx.beginPath();
+   ctx.moveTo(x-size,y-size*.8);
+   ctx.lineTo(x-size,y);
 
-    ctx.moveTo(
-      x-size,
-      y-size*.8
-    );
+   ctx.moveTo(x+size,y-size*.8);
+   ctx.lineTo(x+size,y);
 
-    ctx.lineTo(
-      x+size,
-      y-size*.8
-    );
+   ctx.stroke();
 
-    ctx.stroke();
-
-    ctx.shadowBlur=0;
-
-    ctx.strokeStyle="#7c1421";
-    ctx.lineWidth=5;
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-      x-size,
-      y-size*.8
-    );
-
-    ctx.lineTo(
-      x-size,
-      y
-    );
-
-    ctx.moveTo(
-      x+size,
-      y-size*.8
-    );
-
-    ctx.lineTo(
-      x+size,
-      y
-    );
-
-    ctx.stroke();
-
-    ctx.restore();
-
-  }
-
+   ctx.restore();
+ }
 }
-
-/* =========================
-   GEM
-========================= */
 
 function drawGem(g){
 
-  if(g.z>1)return;
+ const p=1-g.z;
 
-  const p = 1-g.z;
+ const y=H*.31+p*p*(H*.60);
+ const x=getLaneX(g.lane,y);
 
-  const x = laneX(g.lane);
+ const s=10+p*25;
 
-  const horizon = H*.31;
+ ctx.save();
 
-  const y =
-    horizon +
-    p*p*(H*.60);
+ ctx.translate(x,y-s*2);
+ ctx.rotate(Math.PI/4);
 
-  const size =
-    10+p*25;
+ ctx.fillStyle="#20d8ff";
+ ctx.shadowColor="#00d5ff";
+ ctx.shadowBlur=20;
 
-  ctx.save();
+ ctx.fillRect(-s/2,-s/2,s,s);
 
-  ctx.translate(
-    x,
-    y-size*2
-  );
+ ctx.restore();
 
-  ctx.rotate(
-    Math.PI/4
-  );
-
-  ctx.fillStyle="#25d9ff";
-
-  ctx.shadowColor="#00cfff";
-
-  ctx.shadowBlur=20;
-
-  ctx.fillRect(
-    -size/2,
-    -size/2,
-    size,
-    size
-  );
-
-  ctx.restore();
-
-  ctx.shadowBlur=0;
-
+ ctx.shadowBlur=0;
 }
-
-/* =========================
-   PLAYER
-========================= */
 
 function drawPlayer(){
 
-  const x = player.x;
+ const ground=H*.82;
+ const y=ground-player.jump;
+
+ ctx.save();
+
+ ctx.translate(player.x,y);
+
+ ctx.scale(
+   player.sliding?.72:1,
+   player.sliding?.72:1
+ );
+
+ /* shadow */
+ ctx.beginPath();
+ ctx.ellipse(0,7,38,10,0,0,Math.PI*2);
+ ctx.fillStyle="rgba(0,0,0,.55)";
+ ctx.fill();
+
+ /* legs */
+ ctx.fillStyle="#0b0c10";
+ ctx.fillRect(-20,-65,15,55);
+ ctx.fillRect(5,-65,15,55);
+
+ /* boots */
+ ctx.fillStyle="#e92335";
+ ctx.fillRect(-23,-15,20,10);
+ ctx.fillRect(4,-15,20,10);
+
+ /* body */
+ ctx.fillStyle="#101216";
+
+ ctx.beginPath();
+ ctx.moveTo(-30,-128);
+ ctx.lineTo(30,-128);
+ ctx.lineTo(36,-67);
+ ctx.lineTo(0,-45);
+ ctx.lineTo(-36,-67);
+ ctx.closePath();
+ ctx.fill();
+
+ /* chest */
+ ctx.fillStyle="#df2031";
+
+ ctx.beginPath();
+ ctx.moveTo(0,-120);
+ ctx.lineTo(18,-96);
+ ctx.lineTo(0,-70);
+ ctx.lineTo(-18,-96);
+ ctx.closePath();
+ ctx.fill();
+
+ /* arms */
+ ctx.strokeStyle="#111318";
+ ctx.lineWidth=18;
+ ctx.lineCap="round";
+
+ ctx.beginPath();
+ ctx.moveTo(-25,-108);
+ ctx.lineTo(-50,-70);
+ ctx.stroke();
+
+ ctx.beginPath();
+ ctx.moveTo(25,-108);
+ ctx.lineTo(50,-70);
+ ctx.stroke();
+
+ /* red blades */
+ ctx.strokeStyle="#ff2438";
+ ctx.lineWidth=5;
+
+ ctx.beginPath();
+ ctx.moveTo(-47,-82);
+ ctx.lineTo(-58,-106);
+ ctx.stroke();
+
+ ctx.beginPath();
+ ctx.moveTo(47,-82);
+ ctx.lineTo(58,-106);
+ ctx.stroke();
+
+ /* helmet */
+ ctx.fillStyle="#080a0e";
+
+ ctx.beginPath();
+ ctx.arc(0,-147,32,0,Math.PI*2);
+ ctx.fill();
+
+ /* horns */
+ ctx.fillStyle="#ed2538";
+
+ ctx.beginPath();
+ ctx.moveTo(-21,-165);
+ ctx.lineTo(-37,-199);
+ ctx.lineTo(-7,-174);
+ ctx.closePath();
+ ctx.fill();
+
+ ctx.beginPath();
+ ctx.moveTo(21,-165);
+ ctx.lineTo(37,-199);
+ ctx.lineTo(7,-174);
+ ctx.closePath();
+ ctx.fill();
 
-  const ground = H*.82;
+ /* visor */
+ ctx.fillStyle="#ff3342";
+ ctx.shadowColor="#ff2438";
+ ctx.shadowBlur=12;
 
-  const y =
-    ground-player.jump;
+ ctx.fillRect(-22,-152,44,8);
 
-  ctx.save();
+ ctx.shadowBlur=0;
 
-  ctx.translate(x,y);
-
-  let scale =
-    player.sliding ? .72 : 1;
-
-  ctx.scale(scale,scale);
-
-  /* shadow */
-
-  ctx.beginPath();
-
-  ctx.ellipse(
-    0,
-    7,
-    38,
-    10,
-    0,
-    0,
-    Math.PI*2
-  );
-
-  ctx.fillStyle =
-    "rgba(0,0,0,.55)";
-
-  ctx.fill();
-
-  /* legs */
-
-  ctx.fillStyle="#0b0c10";
-
-  ctx.fillRect(
-    -20,
-    -65,
-    15,
-    55
-  );
-
-  ctx.fillRect(
-    5,
-    -65,
-    15,
-    55
-  );
-
-  /* boots */
-
-  ctx.fillStyle="#e92335";
-
-  ctx.fillRect(
-    -23,
-    -15,
-    20,
-    10
-  );
-
-  ctx.fillRect(
-    4,
-    -15,
-    20,
-    10
-  );
-
-  /* body */
-
-  ctx.fillStyle="#101216";
-
-  ctx.beginPath();
-
-  ctx.moveTo(-30,-128);
-  ctx.lineTo(30,-128);
-  ctx.lineTo(36,-67);
-  ctx.lineTo(0,-45);
-  ctx.lineTo(-36,-67);
-
-  ctx.closePath();
-
-  ctx.fill();
-
-  /* chest red */
-
-  ctx.fillStyle="#df2031";
-
-  ctx.beginPath();
-
-  ctx.moveTo(0,-120);
-  ctx.lineTo(18,-96);
-  ctx.lineTo(0,-70);
-  ctx.lineTo(-18,-96);
-
-  ctx.closePath();
-
-  ctx.fill();
-
-  /* shoulders */
-
-  ctx.fillStyle="#16181c";
-
-  ctx.beginPath();
-
-  ctx.arc(
-    -31,
-    -109,
-    14,
-    0,
-    Math.PI*2
-  );
-
-  ctx.fill();
-
-  ctx.beginPath();
-
-  ctx.arc(
-    31,
-    -109,
-    14,
-    0,
-    Math.PI*2
-  );
-
-  ctx.fill();
-
-  /* arms */
-
-  ctx.strokeStyle="#111318";
-
-  ctx.lineWidth=18;
-
-  ctx.lineCap="round";
-
-  ctx.beginPath();
-
-  ctx.moveTo(
-    -25,
-    -108
-  );
-
-  ctx.lineTo(
-    -50,
-    -70
-  );
-
-  ctx.stroke();
-
-  ctx.beginPath();
-
-  ctx.moveTo(
-    25,
-    -108
-  );
-
-  ctx.lineTo(
-    50,
-    -70
-  );
-
-  ctx.stroke();
-
-  /* red blades */
-
-  ctx.strokeStyle="#ff2438";
-
-  ctx.lineWidth=5;
-
-  ctx.beginPath();
-
-  ctx.moveTo(
-    -47,
-    -82
-  );
-
-  ctx.lineTo(
-    -58,
-    -106
-  );
-
-  ctx.stroke();
-
-  ctx.beginPath();
-
-  ctx.moveTo(
-    47,
-    -82
-  );
-
-  ctx.lineTo(
-    58,
-    -106
-  );
-
-  ctx.stroke();
-
-  /* helmet */
-
-  ctx.fillStyle="#080a0e";
-
-  ctx.beginPath();
-
-  ctx.arc(
-    0,
-    -147,
-    32,
-    0,
-    Math.PI*2
-  );
-
-  ctx.fill();
-
-  /* horns */
-
-  ctx.fillStyle="#ed2538";
-
-  ctx.beginPath();
-
-  ctx.moveTo(-21,-165);
-  ctx.lineTo(-37,-199);
-  ctx.lineTo(-7,-174);
-
-  ctx.closePath();
-
-  ctx.fill();
-
-  ctx.beginPath();
-
-  ctx.moveTo(21,-165);
-  ctx.lineTo(37,-199);
-  ctx.lineTo(7,-174);
-
-  ctx.closePath();
-
-  ctx.fill();
-
-  /* visor */
-
-  ctx.fillStyle="#ff3342";
-
-  ctx.shadowColor="#ff2438";
-
-  ctx.shadowBlur=12;
-
-  ctx.fillRect(
-    -22,
-    -152,
-    44,
-    8
-  );
-
-  ctx.shadowBlur=0;
-
-  ctx.restore();
-
+ ctx.restore();
 }
-
-/* =========================
-   DRAW
-========================= */
 
 function draw(){
 
-  ctx.clearRect(
-    0,
-    0,
-    W,
-    H
-  );
+ ctx.clearRect(0,0,W,H);
 
-  drawBackground();
+ drawBackground();
+ drawRoad();
 
-  drawRoad();
+ for(const g of gems)drawGem(g);
+ for(const o of obstacles)drawObstacle(o);
 
-  for(let g of gems){
-    drawGem(g);
-  }
-
-  for(let o of obstacles){
-    drawObstacle(o);
-  }
-
-  drawPlayer();
-
+ drawPlayer();
 }
 
-/* =========================
-   MAIN LOOP
-========================= */
+function loop(){
 
-function gameLoop(){
+ update();
+ draw();
 
-  update();
-
-  draw();
-
-  requestAnimationFrame(gameLoop);
-
+ requestAnimationFrame(loop);
 }
-
-/* =========================
-   START ENGINE
-========================= */
 
 resize();
-
-player.x = laneX(1);
-
-gameLoop();
+loop();
 
 </script>
 
